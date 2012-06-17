@@ -8,4 +8,4 @@ Duallist for ASP.NET MVC 3 provides drag & drop functionality between lists.
   - Uses ul-li markup.
   - Easily themeable.
 
-[[doc/duallist.png]]
+![Screenshot](https://github.com/krk/duallist/raw/master/doc/duallist.png)
