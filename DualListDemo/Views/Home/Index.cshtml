@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewBag.Message</h2>
+<script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+            @*// Disable caching of AJAX responses*@
+            cache: false
+        });             
+    });
+</script>
+<h2>DualList - Drag-drop List Widget for jQuery</h2>
+<p>Container 1:</p>
+@{
+    Html.RenderPartial("_DualList", new DualListDemo.Models.DualListViewModel()
+    {
+        ControllerName = "Home",
+        ContainerId = "abcd",
+        LeftListId = "listLeft2",
+        RightListId = "listRight2",
+        SubmitButtonId = "sbmt2",
+        ConnectWithClass = "connectedSortable2",
+        LeftListHeader = "Varolan",
+        RightListHeader = "Seçilebilen",
+        UpdateJS = @"function(containerId, listId, elementId){$.ajax('/Home/UpdateList?cid=' + containerId + '&id=' + elementId + '&lid=' + listId)
+                    .done(function (data) { showMessage(data); })
+                    .fail(function (data) {
+                        ui.item.appendTo(that.list2);
+                        showFailStr('Nesne taşınamadı: ' + ui.item.text());
+                    });}"
+    });
+}
+<div class="demo-description">
+    <p>
+        You cannot drag any items between the two containers.
+    </p>
+</div>
+<p>Container 2:</p>
+@{
+    Html.RenderPartial("_DualList", new DualListDemo.Models.DualListViewModel()
+    {
+        ControllerName = "Home",
+        ContainerId = "abc",
+        LeftListId = "listLeft1",
+        RightListId = "listRight1",
+        SubmitButtonId = "sbmt",
+        ConnectWithClass = "connectedSortable",
+        LeftListHeader = "Varolan",
+        RightListHeader = "Seçilebilen",
+        UpdateJS = @"function(containerId, listId, elementId){$.ajax('/Home/UpdateList?cid=' + containerId + '&id=' + elementId + '&lid=' + listId)
+                    .done(function (data) { showMessage(data); })
+                    .fail(function (data) {
+                        ui.item.appendTo(that.list2);
+                        showFailStr('Nesne taşınamadı: ' + ui.item.text());
+                    });}"
+    });    
+}
+<div class="demo-description">
+    <p>
+        Drag items from one list into another and vice versa. Ordering within the same list is not allowed.
+    </p>
+    <p>Multiple lists in one page is supported.</p>
+    <a href="http://www.dissipatedheat.com">Dissipated Heat</a>
+</div>

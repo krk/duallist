@@ -1,0 +1,106 @@
+﻿@model DualListDemo.Models.DualListViewModel
+<style type="text/css">
+    #@(Model.ContainerId)
+    {
+        background: #FFC;
+        padding: 5px;
+        overflow:auto;
+        width: 510px;
+    }
+
+    #@(Model.ContainerId) h4, h5, h6
+    {
+        display: inline;
+        text-align:center;
+    }
+
+    #@(Model.ContainerId) .ui-ul-duallist
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;        
+        float: left;
+        margin-right: 10px;        
+    }
+    #@(Model.ContainerId) .ui-ul-duallist li, #@(Model.ContainerId) .ui-state-highlight
+    {
+        margin: 0 5px 5px 5px;
+        padding: 5px;        
+        font-size: 1.2em;
+        width: 180px;
+        cursor: move;
+    }
+
+    #@(Model.ContainerId) .ui-state-placeholder { height: 1.5em; line-height: 1.2em; background-color: gray; }
+
+    #@(Model.ContainerId) ul .ui-sortable-helper
+    {
+        color: blue;        
+        font-weight: bold;
+    }
+
+    ul#@(@Model.LeftListId).@Model.ConnectWithClass, ul#@(@Model.RightListId).@Model.ConnectWithClass
+    {
+        background: #eee;
+        width: 220px;
+        padding: 5px !important; @* Boş listeye *@
+    }
+    #@(Model.ContainerId) #@(Model.ContainerId)_rightDiv
+    {
+        margin-left: 30px;
+    }
+
+
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#@(Model.ContainerId)').duallist({
+            leftListId: '@(Model.LeftListId)',
+            rightListId: '@(Model.RightListId)sdfgsdf',
+            connectWith: '@(Model.ConnectWithClass)',
+            update: @(new MvcHtmlString(Model.UpdateJS))
+        });
+
+        $('#@(Model.SubmitButtonId)').click(function () {
+
+            var idList = $('#@(Model.ContainerId)').duallist('ids');
+
+            $.ajax({
+                url: '/@(Model.ControllerName)/SubmitLists',
+                type: 'POST',
+                data: idList,
+                traditional: true
+            }).done(function (data) { showMessage(data); });
+        });
+
+        $('#@(Model.ContainerId)').corner("round 8px").parent().css('padding', '2px').corner("round 10px")
+        $('#@(Model.ContainerId)').parent().width($('#@(Model.ContainerId)').width() + 10);
+    });
+</script>
+<div style="background: #66AAFF">
+    <div id="@Model.ContainerId">
+        <div style="float: left;">
+            <h5>@Model.LeftListHeader<br />
+            </h5>
+            <ul id="@Model.LeftListId" class="ui-ul-duallist @Model.ConnectWithClass">
+                @foreach (var item in Model.LeftList)
+                {
+                    <li id="@item.Id" class="first-list-item ui-state-default">@item</li>
+                }
+            </ul>
+        </div>
+        <div id="@(Model.ContainerId)_rightDiv" style="float: right;">
+            <h5>@Model.RightListHeader<br />
+            </h5>
+            <ul id="@Model.RightListId" class="ui-ul-duallist @Model.ConnectWithClass">
+                @foreach (var item in Model.RightList)
+                {
+                    <li id="@item.Id" class="second-list-item ui-state-highlight">@item</li>
+                }
+            </ul>
+        </div>
+        <div style="clear: both; text-align: center; padding: 10px;">
+            <a id="@Model.SubmitButtonId" href="#">Submit Lists</a>
+        </div>
+    </div>
+</div>
